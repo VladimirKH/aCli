@@ -64,5 +64,7 @@ public class MainActivity extends BaseActivity {
     /**
      * @todo
      */
-    public class SomeRequest extends RestTask {}
+    public class SomeRequest extends RestTask {//@todo унаследовать от BaseRestActivity::RestTask
+        ;
+    }
 }

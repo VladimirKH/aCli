@@ -9,9 +9,13 @@ public class BaseActivity extends BaseRestActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (true) {
+        if (isAuthenticated()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
+    }
+
+    protected boolean isAuthenticated() {
+        return true;
     }
 }
