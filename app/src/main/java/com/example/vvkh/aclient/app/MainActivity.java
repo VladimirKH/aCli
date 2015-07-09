@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;//@todo delete
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import static java.lang.String.*;
 import static java.lang.Thread.*;
 
 
@@ -20,6 +34,8 @@ public class MainActivity extends BaseActivity {
     ListView videoList;
     String[] videoArray = {"No Videos"};
     ArrayAdapter<String> videoAdapter;
+
+    String taskUrl = "http://gdata.youtube.com/feeds/api/users/twistedequations/uploads?v=2&alt=jsonc&start-index=1&max-results=20";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +112,31 @@ public class MainActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            HttpClient client = new DefaultHttpClient();
+            HttpGet getRequest = new HttpGet(taskUrl);
+
             try {
-                sleep(3000);
-            } catch (InterruptedException e) {
+                HttpResponse response = client.execute(getRequest);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                Log.i("MyJsonData", "dd");
+                if (statusCode != 200) {
+                    return null;
+                }
+
+                InputStream jsonStream = response.getEntity().getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(jsonStream));
+                StringBuilder builder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
+
+                String jsonData = builder.toString();
+                Log.i("MyJsonData", jsonData);
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
