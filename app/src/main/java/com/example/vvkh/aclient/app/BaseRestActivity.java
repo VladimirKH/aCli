@@ -13,6 +13,8 @@ public class BaseRestActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = this;
     }
 
     public class RestTask extends AsyncTask<Void, Void, Void> {

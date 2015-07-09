@@ -1,5 +1,7 @@
 package com.example.vvkh.aclient.app;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;//@todo delete
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import static java.lang.Thread.*;
 
 
 public class MainActivity extends BaseActivity {
@@ -30,6 +34,9 @@ public class MainActivity extends BaseActivity {
         videoList = (ListView) findViewById(R.id.videoList);
         videoAdapter = new ArrayAdapter<String>(this, R.layout.video_list_item, videoArray);
         videoList.setAdapter(videoAdapter);
+
+        SomeRequest someRequest = new SomeRequest();
+        someRequest.execute();
     }
 
 
@@ -74,7 +81,35 @@ public class MainActivity extends BaseActivity {
     /**
      * @todo
      */
-    public class SomeRequest extends RestTask {//@todo унаследовать от BaseRestActivity::RestTask
-        ;
+    public class SomeRequest  extends AsyncTask<Void, Void, Void> {//extends RestTask {//@todo унаследовать от BaseRestActivity::RestTask
+
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(context);
+            dialog.setTitle("Vremenniy title");
+            dialog.show();
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void resul) {
+            dialog.dismiss();
+
+            super.onPostExecute(resul);
+        }
     }
 }
