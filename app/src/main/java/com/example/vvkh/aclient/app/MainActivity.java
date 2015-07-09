@@ -7,19 +7,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
 public class MainActivity extends BaseActivity {
+
+    ListView videoList;
+    String[] videoArray = {"No Videos"};
+    ArrayAdapter<String> videoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
-        }
+        }*/
+
+        videoList = (ListView) findViewById(R.id.videoList);
+        videoAdapter = new ArrayAdapter<String>(this, R.layout.video_list_item, videoArray);
+        videoList.setAdapter(videoAdapter);
     }
 
 

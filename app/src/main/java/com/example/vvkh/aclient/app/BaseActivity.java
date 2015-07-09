@@ -16,6 +16,6 @@ public class BaseActivity extends BaseRestActivity {
     }
 
     protected boolean isAuthenticated() {
-        return true;
+        return false;
     }
 }
