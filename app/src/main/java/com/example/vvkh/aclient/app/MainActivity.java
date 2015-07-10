@@ -19,11 +19,17 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.lang.String.*;
 import static java.lang.Thread.*;
@@ -32,10 +38,12 @@ import static java.lang.Thread.*;
 public class MainActivity extends BaseActivity {
 
     ListView videoList;
-    String[] videoArray = {"No Videos"};
+    //String[] videoArray = {"No Videos"};//@todo delete
     ArrayAdapter<String> videoAdapter;
 
     String taskUrl = "http://10.0.3.2:8083";//"http://gdata.youtube.com/feeds/api/users/twistedequations/uploads?v=2&alt=jsonc&start-index=1&max-results=20";
+
+    ArrayList<String> videoArrayList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,7 @@ public class MainActivity extends BaseActivity {
         }*/
 
         videoList = (ListView) findViewById(R.id.videoList);
-        videoAdapter = new ArrayAdapter<String>(this, R.layout.video_list_item, videoArray);
+        videoAdapter = new ArrayAdapter<String>(this, R.layout.video_list_item, videoArrayList);
         videoList.setAdapter(videoAdapter);
 
         SomeRequest someRequest = new SomeRequest();
@@ -133,10 +141,16 @@ public class MainActivity extends BaseActivity {
                 }
 
                 String jsonData = builder.toString();
-                Log.i("MyJsonData", jsonData);
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+
+                JSONObject json = new JSONObject(jsonData);
+                JSONObject data = json.getJSONObject("data");
+                JSONArray users = data.getJSONArray("users");
+                for (int i = 0; i < users.length(); i++) {
+                    JSONObject user = users.getJSONObject(i);
+                    videoArrayList.add(user.getString("username"));
+                }
+
+            } catch (JSONException | IOException e) {
                 e.printStackTrace();
             }
 
@@ -146,6 +160,8 @@ public class MainActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void resul) {
             dialog.dismiss();
+
+            videoAdapter.notifyDataSetChanged();
 
             super.onPostExecute(resul);
         }
