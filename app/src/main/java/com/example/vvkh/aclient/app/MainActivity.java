@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity {
     String[] videoArray = {"No Videos"};
     ArrayAdapter<String> videoAdapter;
 
-    String taskUrl = "http://gdata.youtube.com/feeds/api/users/twistedequations/uploads?v=2&alt=jsonc&start-index=1&max-results=20";
+    String taskUrl = "http://10.0.3.2:8083";//"http://gdata.youtube.com/feeds/api/users/twistedequations/uploads?v=2&alt=jsonc&start-index=1&max-results=20";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity {
     /**
      * @todo
      */
-    public class SomeRequest  extends AsyncTask<Void, Void, Void> {//extends RestTask {//@todo унаследовать от BaseRestActivity::RestTask
+    public class SomeRequest  extends AsyncTask<Void, Void, Void> {//extends RestTask {//@todo inheri BaseRestActivity::RestTask
 
         ProgressDialog dialog;
 
@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity {
                 HttpResponse response = client.execute(getRequest);
                 StatusLine statusLine = response.getStatusLine();
                 int statusCode = statusLine.getStatusCode();
-                Log.i("MyJsonData", "dd");
+
                 if (statusCode != 200) {
                     return null;
                 }
