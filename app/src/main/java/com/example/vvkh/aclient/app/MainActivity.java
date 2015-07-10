@@ -38,10 +38,9 @@ import static java.lang.Thread.*;
 public class MainActivity extends BaseActivity {
 
     ListView videoList;
-    //String[] videoArray = {"No Videos"};//@todo delete
     ArrayAdapter<String> videoAdapter;
 
-    String taskUrl = "http://10.0.3.2:8083";//"http://gdata.youtube.com/feeds/api/users/twistedequations/uploads?v=2&alt=jsonc&start-index=1&max-results=20";
+    String taskUrl = "http://10.0.3.2:8083";
 
     ArrayList<String> videoArrayList = new ArrayList<String>();
 
